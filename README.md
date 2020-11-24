@@ -7,10 +7,7 @@ Characters in dataset will disturb the preprocessing and analysis of the data. T
 ```
    data=pd.read_csv("HistoricalQuotes.csv")
    del data['Date']
-   data['Close/Last']=data['Close/Last'].str.replace('$', '')
-   data['Open']=data['Open'].str.replace('$', '')
-   data['High']=data['High'].str.replace('$', '')
-   data['Low']=data['Low'].str.replace('$', '')
+  
 ```
 
 ### Step 2:set up testing and training dataset for indepenent variables.
