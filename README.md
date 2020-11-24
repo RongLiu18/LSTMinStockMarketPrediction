@@ -2,7 +2,7 @@
 LSTM(Long-short term model) is one of the techniques in recurrence neural network(RNN).In this project, LSTM(Long-short term model) will be used to predict the trend of stock martket based on given NASDAQ time series data. 
 
 ## LSTM on python
-### Step 1: remove irrelevant elements in the dataset such as "$" character
+### Step 1: remove irrelevant elements in the dataset.
 Characters in dataset will disturb the preprocessing and analysis of the data. Therefore it is necessary to remove the disturbing factors in the data.
 ```
    data=pd.read_csv("HistoricalQuotes.csv")
