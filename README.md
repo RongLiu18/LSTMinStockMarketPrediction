@@ -69,38 +69,37 @@ Setting up training dataset based on the values of independent variables accordi
 ```
 def build_model():
     model = Sequential()
-    
     model.add(LSTM(units=100,input_shape=(10,1),return_sequences=True))
     model.add(Dropout(0.2))
     model.add(LSTM(100, return_sequences=False))
     model.add(Dropout(0.2))
     model.add(Dense(units=1))
-    
-    start = time.time()
-    model.compile(loss="mse", optimizer="rmsprop", metrics=['accuracy'])
-    print("Compilation Time : ", time.time() - start)
-    
+    model.add(Activation('linear'))
+    model.compile(loss="mse", optimizer="rmsprop")
+    print(model.summary())
     return model
+    
 ```
 ### Step 5: print out the results of analysis and visualize the predicted trend of stock
 ```
+window = 20
+Xtraining, Ytraining, Xtesting, Ytesting = preprocess_data(data[::-1], window)
+model = build_model([Xtraining.shape[2], window, 1, 1])
+model.fit(Xtraining,Ytraining,batch_size=0,epochs=0,validation_split=0.1,verbose=0,sample_weight=None)
+print("Xtrain", Xtraining.shape)
+print("Ytrain", Ytraining.shape)
+print("Xtest", Xtesting.shape)
+print("Ytest", Ytesting.shape)
+
 trainScore = model.evaluate(Xtraining, Ytraining, verbose=1)
 print('Train Score: ', (trainScore[0], math.sqrt(trainScore[0])))
 
 testScore = model.evaluate(Xtesting, Ytesting, verbose=1)
 print('Test Score: ' ,(testScore[0], math.sqrt(testScore[0])))   
 
-diff = []
-ratio = []
 
-pred = model.predict(Xtesting)
-for u in range(len(Ytesting)):
-    pred2 = pred[u][0]
-    ratio.append((Ytesting[u] / pred2) - 1)
-    diff.append(abs(Ytesting[u] - pred2))
-       
-plt.plot(pred, color='red')
-plt.plot(Ytesting, color='green')
+plt.plot(Ytesting, color='red', label='Prediction')
+plt.plot(Ytraining, color='green',label='Fact')
 plt.legend(loc='upper left')
 plt.show()
 ```
